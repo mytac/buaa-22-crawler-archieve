@@ -1,6 +1,7 @@
 import urllib3
 from bs4 import BeautifulSoup 
 
+
 def getHtml(url):
   http = urllib3.PoolManager()
   header = {
@@ -12,8 +13,13 @@ def getHtml(url):
   return False
 
 def getContent(html):
-  
-  return ''
+  bs = BeautifulSoup(html,"html.parser") # 缩进格式
+ #子标签通过 > 定义
+  content = bs.select('.col_l .lf_comment_lists > li p ')  #一个数组，每个子项是p节点，之后提取里面的文本就ok啦
+  contentstr=''
+  for i in range(len(content)):
+    contentstr += content[i].text+'\n'
+  return contentstr
 
 
 def main():
