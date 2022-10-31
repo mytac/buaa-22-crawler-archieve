@@ -1,4 +1,5 @@
 import urllib3
+import json
 from bs4 import BeautifulSoup 
 
 
@@ -29,16 +30,19 @@ def getContent(html):
     list.append({'rank':rank,'title':title,'url':url})
   return list
 
-def toJSON(kv):
-  json_str = json.dumps(kv)
-  print(json_str)
+def toJSON(kv,path):
+  with open(path,"w",encoding='utf-8') as write_f:
+    json_str = json.dumps(kv,ensure_ascii=False,indent=4,)
+    write_f.write(json_str)
+  print("写入json文件到:",path)
   return;
 
 
 def main():
   url='https://tech.163.com/game/'
+  path='./data.json'
   html=getHtml(url)
   content=getContent(html)
-  json=toJSON(content)
+  json=toJSON(content,path)
 
 main()
