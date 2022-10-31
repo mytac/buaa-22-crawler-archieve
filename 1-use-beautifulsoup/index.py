@@ -14,18 +14,31 @@ def getHtml(url):
 
 def getContent(html):
   bs = BeautifulSoup(html,"html.parser") # 缩进格式
+  list=[]
  #子标签通过 > 定义
-  content = bs.select('.col_l .lf_comment_lists > li p ')  #一个数组，每个子项是p节点，之后提取里面的文本就ok啦
-  contentstr=''
-  for i in range(len(content)):
-    contentstr += content[i].text+'\n'
-  return contentstr
+  content = bs.select('.col_l .lf_comment_lists > li')  #一个数组，每个子项是p节点，之后提取里面的文本就ok啦
+  for (i,obj) in enumerate(content):
+    node=obj.select('a')[0]
+    url=node.get('href')
+    rank=node.select('em')[0].text
+    title=node.select('p')[0].text
+    # obj.select
+    # url=obj.href
+    # child=bs.select(obj)
+    # print(node)
+    list.append({'rank':rank,'title':title,'url':url})
+  return list
+
+def toJSON(kv):
+  json_str = json.dumps(kv)
+  print(json_str)
+  return;
 
 
 def main():
   url='https://tech.163.com/game/'
   html=getHtml(url)
   content=getContent(html)
-  print(content)
+  json=toJSON(content)
 
 main()
