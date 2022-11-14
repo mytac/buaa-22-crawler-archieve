@@ -2,9 +2,12 @@ import urllib3
 import csv
 import json
 from bs4 import BeautifulSoup 
-
+import pandas as pd
+from Urlreader import urlreader
+import common
 
 topics=['王云鹏','校长'] # 定义主题
+crawl_base_path='http://news.buaa.edu.cn/zhxw'
 csv_path='./url.csv'
 header = ['title', 'url', 'create_time', 'type']
 
@@ -20,23 +23,26 @@ def append_csv(rows):
     writer.writerows(rows)
     f.close()
 
-def get_html(url):
-  http = urllib3.PoolManager()
-  header = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36"
-    }
-  r = http.request('GET', url,None, header)
-  if r.status==200:
-    return r.data.decode('utf-8')
-  return False
-
 # 先爬单个tab
 def spide_single_tab(url):
-  html=get_html(url)
-  bs = BeautifulSoup(html,"html.parser")
+  bs=common.getBS(url)
   rows=dom_parser(bs,'综合信息')
   append_csv(rows)
-  print('already saved!')
+
+def spide_all_page():
+  bs=common.getBS(crawl_base_path+'.htm')
+  # 获取总页码
+  pagination=bs.select('#fanye50834')[0].text
+  [ignore,total]=pagination.split('/')
+  total=int(total)
+  print(total)
+  # 倒着爬，插入到csv中
+  for i in range(1,total-1):
+    if i<10:
+      page_num=total-i
+      url=crawl_base_path+'/'+str(page_num)+'.htm'
+      spide_single_tab(url)
+  print('done!')
 
 
 # 解析dom，拿到需要的信息
@@ -51,13 +57,17 @@ def dom_parser(bs,type):
     list.append({'create_time':date,'title':title,'url':url,'type':type})
   return list
 
-
-
+# 计算相关度
+def calculate_correlation(url):
+  return void;
 
 
 def main():
   url='http://news.buaa.edu.cn/zhxw.htm'
-  initial_csv()
-  spide_single_tab(url)
+  # initial_csv()
+  # spide_single_tab(url)
+  # spide_all_page()
+  reader=urlreader(csv_path,crawl_base_path)
+  reader.get_requests()
 
 main()
