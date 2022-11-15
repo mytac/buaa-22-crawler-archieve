@@ -1,6 +1,6 @@
 import pandas as pd
 from bs4 import BeautifulSoup
-import common
+from common import getBS 
 
 class urlreader:
   "csv"
@@ -15,8 +15,12 @@ class urlreader:
     for (i,obj) in enumerate(list):
       url=self.base+obj
       self.request_list.append(url)
-    print(self.request)
   #读取文章链接下的内容
   def read_url(self):
-    bs=common.getBS(self.request_list[0])
-    url=bs.select('.v_news_content')[0]
+    url=self.request_list[0]
+    bs=getBS(url)
+    content=bs.select('.v_news_content>p')
+    print(content)
+  def run(self):
+    self.get_requests()
+    self.read_url()

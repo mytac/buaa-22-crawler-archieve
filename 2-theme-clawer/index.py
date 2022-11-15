@@ -4,12 +4,13 @@ import json
 from bs4 import BeautifulSoup 
 import pandas as pd
 from Urlreader import urlreader
-import common
+from common import getBS 
 
 topics=['王云鹏','校长'] # 定义主题
 crawl_base_path='http://news.buaa.edu.cn/zhxw'
 csv_path='./url.csv'
 header = ['title', 'url', 'create_time', 'type']
+
 
 def initial_csv():
   with open(csv_path, 'w', encoding='UTF8', newline='') as f:
@@ -25,12 +26,12 @@ def append_csv(rows):
 
 # 先爬单个tab
 def spide_single_tab(url):
-  bs=common.getBS(url)
+  bs=getBS(url)
   rows=dom_parser(bs,'综合信息')
   append_csv(rows)
 
 def spide_all_page():
-  bs=common.getBS(crawl_base_path+'.htm')
+  bs=getBS(crawl_base_path+'.htm')
   # 获取总页码
   pagination=bs.select('#fanye50834')[0].text
   [ignore,total]=pagination.split('/')
@@ -57,17 +58,13 @@ def dom_parser(bs,type):
     list.append({'create_time':date,'title':title,'url':url,'type':type})
   return list
 
-# 计算相关度
-def calculate_correlation(url):
-  return void;
-
 
 def main():
   url='http://news.buaa.edu.cn/zhxw.htm'
   # initial_csv()
   # spide_single_tab(url)
   # spide_all_page()
-  reader=urlreader(csv_path,crawl_base_path)
-  reader.get_requests()
+  reader=urlreader(csv_path,'http://news.buaa.edu.cn/')
+  reader.run()
 
 main()
