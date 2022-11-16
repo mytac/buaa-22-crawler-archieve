@@ -24,4 +24,13 @@ http://news.buaa.edu.cn/zhxw/1107.htm
 
 ### 2. 进入到链接中获取内容
 
+#### 分词
+
+jieba 分词分不出来人名，所以要导入用户自定义的词库
+
+```
+jieba.load_userdict('../roles_name.txt')
+default_mode = jieba.lcut(file, cut_all=False) # 精确模式
+```
+
 ### 3. 计算相关度
