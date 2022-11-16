@@ -21,16 +21,38 @@ http://news.buaa.edu.cn/zhxw/1107.htm
 ```
 
 这样获取到总页码之后倒着爬就 ok 啦！
+最终把 url 链接存入到 csv 链接中就 ok 了
 
-### 2. 进入到链接中获取内容
+### 2. 分词分析
+
+#### 主题词
+
+自定义主题词
+
+```
+topicwords={'校长','王云鹏'}
+```
+
+#### 停用词
+
+从网上搜的[中文停用词](https://www.cnblogs.com/mfmdaoyou/p/6848772.html)，存入为 txt 文件，使用时转成数组放到内存中。
 
 #### 分词
 
 jieba 分词分不出来人名，所以要导入用户自定义的词库
 
 ```
-jieba.load_userdict('../roles_name.txt')
-default_mode = jieba.lcut(file, cut_all=False) # 精确模式
+jieba.load_userdict('./jieba_user_load.txt')
+jieba.cut(p,cut_all=False) # 精确模式
 ```
 
+分后的词，存进`docwords`
+
 ### 3. 计算相关度
+
+先算 docwords 和 topicwords 的交集，记为 commwords ，然后拿该交集除以并集减去交集的差，最终计算结果即为计算相关度。
+
+```
+相关度=(交集)/(并集-交集)
+sim=len(commwords)/(len(self.topicwords)+len(docwords)-len(commwords))
+```
