@@ -13,6 +13,11 @@
 1. 使用词汇集合描述主题时，如何计算页面内容与主题相关度
 2. 从学校网站的新闻列表中，抓取与校长相关的页面，编写程序实现
 
+[作业三 - deep web 信息采集 - 雪球选股 ](./3-deep-web-crawler/note.md)
+
+1. 什么是 Deep Web？
+2.
+
 # 相关库
 
 1. [urllib3](https://pypi.org/project/urllib3/)

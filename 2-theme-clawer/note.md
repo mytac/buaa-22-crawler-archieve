@@ -50,7 +50,7 @@ jieba.cut(p,cut_all=False) # 精确模式
 
 ### 3. 计算相关度
 
-先算 docwords 和 topicwords 的交集，记为 commwords ，然后拿该交集除以并集减去交集的差，最终计算结果即为计算相关度。
+先算 docwords 和 topicwords 的交集，记为 commwords ，然后拿该交集除以并集减去交集的差，最终计算结果即为相关度。
 
 ```
 相关度=(交集)/(并集-交集)
