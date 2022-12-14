@@ -1,9 +1,7 @@
 import urllib3
-from bs4 import BeautifulSoup 
 import pandas as pd
 import csv
 import json
-
 
 
 def get_html(url):
@@ -20,22 +18,6 @@ def get_html(url):
 def json_parse(str):
   return json.loads(str)
 
-def getBS(url):
-  html=get_html(url)
-  if html != False:
-    bs = BeautifulSoup(html,"html.parser")
-    return bs
-
-
-
-def get_stoplist():
-  path='./stoplist.txt'
-  stoplist=[]
-  f=open(path,encoding='utf-8')
-  words=f.read()
-  word_list=str.split(words)
-  f.close()
-  return word_list
 
 def initial_csv(csv_path,header):
   with open(csv_path, 'w', encoding='UTF8', newline='') as f:

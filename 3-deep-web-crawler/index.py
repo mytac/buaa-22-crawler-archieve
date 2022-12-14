@@ -54,7 +54,7 @@ def save_data(path,rows):
 
 def main():
   input_csv_path='./input.csv'
-  output_csv_path='./out_put.csv'
+  output_csv_path='./output.csv'
   #基础的参数，如分页信息、排序等
   base_params={
     'only_count':'0',
